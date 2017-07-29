@@ -5,18 +5,23 @@ To deploy as a module, you must run:
 
     KEYCLOAK_HOME/bin/jboss-cli.sh --command="module add --name=io.evt.keycloak.provider.events.blockchain-integration --resources=/target/keycloak-events.jar --dependencies=org.keycloak.keycloak-core,org.keycloak.keycloak-server-spi,org.keycloak.keycloak-server-spi-private"
     
-Then registering the provider by editing `standalone/configuration/standalone.xml` and adding the module to the providers element:
+Then to register the provider you must run: 
+    
+    KEYCLOAK_HOME/bin/jboss-cli.sh --command="/subsystem=keycloak-server:list-add(name=providers, value="module:org.keycloak.examples.event-sysout")"
+    
+Or by editing `standalone/configuration/standalone.xml` and adding the module to the providers element:
 
     <providers>
         ...
         <provider>module:io.evt.keycloak.provider.events.blockchain-integration</provider>
     </providers>
 
-Then start (or restart) the server. 
+Then restart the server, manually or running: 
+
+    KEYCLOAK_HOME/bin/jboss-cli.sh --command="reload"
 
 Once started open the Keycloak admin console, select your realm, then click on Events, followed by config. Click on Listeners 
 select box, then pick blockchain-integration from the dropdown.
-
 
 
 Example Event Listener that prints events to System.out
